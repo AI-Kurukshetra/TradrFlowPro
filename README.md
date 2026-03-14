@@ -113,3 +113,5 @@ In Supabase Dashboard -> Authentication -> URL Configuration:
 - Auth-protected routes are enforced by `middleware.ts`.
 - Supabase clients are separated for browser/server usage.
 - Server Actions handle secure writes for invoices, POs, financing requests, and KYC submissions.
+
+## Jay Shree Krishna
