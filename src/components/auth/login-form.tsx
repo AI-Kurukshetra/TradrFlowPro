@@ -12,28 +12,36 @@ export function LoginForm({ redirectedFrom = "/dashboard/buyer" }: { redirectedF
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const safeRedirect =
+    redirectedFrom && redirectedFrom.startsWith("/") ? redirectedFrom : "/dashboard/buyer";
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) return;
     setError("");
     setLoading(true);
 
     const formData = new FormData(e.currentTarget);
-    const email = String(formData.get("email") ?? "");
+    const email = String(formData.get("email") ?? "").trim();
     const password = String(formData.get("password") ?? "");
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-    setLoading(false);
+      if (error) {
+        setError(error.message);
+        return;
+      }
 
-    if (error) {
-      setError(error.message);
-      return;
+      router.replace(safeRedirect);
+      // Hard redirect ensures cookie/session state is immediately reflected.
+      window.location.assign(safeRedirect);
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
     }
-
-    router.push(redirectedFrom);
-    router.refresh();
   }
 
   return (

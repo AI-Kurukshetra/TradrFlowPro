@@ -39,5 +39,40 @@
 
   body {
     @apply bg-background text-foreground;
+    background-image:
+      radial-gradient(circle at 10% 0%, hsl(var(--primary) / 0.12), transparent 26%),
+      radial-gradient(circle at 90% 0%, hsl(var(--accent) / 0.1), transparent 24%);
+    background-attachment: fixed;
+  }
+}
+
+.nav-loader {
+  pointer-events: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 70;
+  height: 3px;
+  width: 100%;
+  transform: scaleX(0);
+  transform-origin: left;
+  opacity: 0;
+  transition: opacity 150ms ease;
+}
+
+.nav-loader--active {
+  opacity: 1;
+  transform: scaleX(1);
+  background: linear-gradient(90deg, hsl(var(--primary)), hsl(var(--accent)), hsl(var(--primary)));
+  background-size: 220% 100%;
+  animation: nav-loader-flow 1.1s linear infinite;
+}
+
+@keyframes nav-loader-flow {
+  0% {
+    background-position: 0% 0%;
+  }
+  100% {
+    background-position: 220% 0%;
   }
 }
