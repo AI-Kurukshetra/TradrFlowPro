@@ -106,7 +106,7 @@ In Supabase Dashboard -> Authentication -> URL Configuration:
 - `Site URL`: your Vercel production URL (for example `https://your-app.vercel.app`)
 - `Redirect URLs`: add:
   - `https://your-app.vercel.app/auth/callback`
-  - `https://*.vercel.app/auth/callback` (for preview deployments)
+  - `https://*.vercel.app/auth/callback` (for previffew deployments)
 
 ## Notes
 
