@@ -32,6 +32,7 @@ Required variables:
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
+KYC_UPLOAD_BUCKET=
 ```
 
 `SUPABASE_SERVICE_ROLE_KEY` is only required for running the Node seed script.
@@ -95,7 +96,17 @@ npm start
 3. Add env vars:
    - `NEXT_PUBLIC_SUPABASE_URL`
    - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+   - `KYC_UPLOAD_BUCKET` (optional, example: `kyc-documents`)
 4. Deploy.
+
+## Supabase Auth Setup (Required for Production Login)
+
+In Supabase Dashboard -> Authentication -> URL Configuration:
+
+- `Site URL`: your Vercel production URL (for example `https://your-app.vercel.app`)
+- `Redirect URLs`: add:
+  - `https://your-app.vercel.app/auth/callback`
+  - `https://*.vercel.app/auth/callback` (for preview deployments)
 
 ## Notes
 

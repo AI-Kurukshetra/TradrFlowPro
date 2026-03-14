@@ -1,6 +1,6 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr";
 import { type NextRequest, NextResponse } from "next/server";
-import { supabaseAnonKey, supabaseUrl } from "@/lib/env";
+import { getSupabasePublicConfig } from "@/lib/supabase/config";
 
 const protectedPrefixes = [
   "/dashboard",
@@ -12,8 +12,9 @@ const protectedPrefixes = [
 
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
+  const { url, anonKey } = getSupabasePublicConfig();
 
-  const supabase = createServerClient(supabaseUrl, supabaseAnonKey, {
+  const supabase = createServerClient(url, anonKey, {
     cookies: {
       get(name: string) {
         return request.cookies.get(name)?.value;

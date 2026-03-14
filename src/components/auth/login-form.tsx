@@ -38,7 +38,9 @@ export function LoginForm({ redirectedFrom = "/dashboard/buyer" }: { redirectedF
       // Hard redirect ensures cookie/session state is immediately reflected.
       window.location.assign(safeRedirect);
     } catch (err) {
-      setError("Something went wrong. Please try again.");
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
     } finally {
       setLoading(false);
     }

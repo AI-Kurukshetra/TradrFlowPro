@@ -16,6 +16,7 @@ export function SignupForm() {
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (loading) return;
     setError("");
     setSuccess("");
     setLoading(true);
@@ -24,24 +25,30 @@ export function SignupForm() {
     const email = String(formData.get("email") ?? "");
     const password = String(formData.get("password") ?? "");
 
-    const supabase = createClient();
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        emailRedirectTo: `${window.location.origin}/auth/callback`,
-      },
-    });
+    try {
+      const supabase = createClient();
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          emailRedirectTo: `${window.location.origin}/auth/callback`,
+        },
+      });
 
-    setLoading(false);
+      if (error) {
+        setError(error.message);
+        return;
+      }
 
-    if (error) {
-      setError(error.message);
-      return;
+      setSuccess("Account created! Check your email for confirmation.");
+      setTimeout(() => router.push("/login"), 2000);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Something went wrong. Please try again.";
+      setError(message);
+    } finally {
+      setLoading(false);
     }
-
-    setSuccess("Account created! Check your email for confirmation.");
-    setTimeout(() => router.push("/login"), 2000);
   }
 
   return (
