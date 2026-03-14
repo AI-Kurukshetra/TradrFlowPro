@@ -1,36 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# TradeFlow Pro
 
-## Getting Started
+Production-ready **Next.js 14 App Router** SaaS for Supply Chain Finance.
 
-First, run the development server:
+## Stack
+
+- Next.js 14 (App Router, TypeScript)
+- Supabase (Auth + PostgreSQL + Storage)
+- Tailwind CSS + shadcn/ui
+- Recharts
+- Deploy-ready for Vercel
+
+## Implemented Pages
+
+- `/` Landing page (hero, features, pricing, CTA)
+- `/login` Auth login
+- `/signup` Auth signup
+- `/dashboard/buyer` Buyer dashboard
+- `/dashboard/supplier` Supplier dashboard
+- `/invoices` Invoice management (list/create/approve)
+- `/purchase-orders` Purchase order management (list/create)
+- `/analytics` Analytics dashboard (TPV + payment metrics)
+- `/onboarding/supplier` Supplier onboarding (KYC + document upload)
+
+## Environment
+
+`.env.local` is already created with the provided Supabase values.
+
+Required variables:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+`SUPABASE_SERVICE_ROLE_KEY` is only required for running the Node seed script.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Database Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+Run these SQL files in Supabase SQL Editor:
 
-## Learn More
+1. `supabase/schema.sql`
+2. `supabase/seed.sql`
 
-To learn more about Next.js, take a look at the following resources:
+Tables included:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- `users`
+- `organizations`
+- `suppliers`
+- `buyers`
+- `invoices`
+- `purchase_orders`
+- `payments`
+- `financing_requests`
+- `documents`
+- `audit_logs`
+- `notifications`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Seed Script
 
-## Deploy on Vercel
+A TypeScript seed script is included at `scripts/seed.ts`.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+It inserts demo data with exactly:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- 10 suppliers
+- 20 invoices
+- 5 purchase orders
+
+Run it with:
+
+```bash
+SUPABASE_SERVICE_ROLE_KEY=your_key npm run seed
+```
+
+## Local Development
+
+```bash
+npm install
+npm run dev
+```
+
+## Production Build
+
+```bash
+npm run lint
+npm run build
+npm start
+```
+
+## Vercel Deployment
+
+1. Push repo to GitHub/GitLab/Bitbucket.
+2. Import project in Vercel.
+3. Add env vars:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+4. Deploy.
+
+## Notes
+
+- Auth-protected routes are enforced by `middleware.ts`.
+- Supabase clients are separated for browser/server usage.
+- Server Actions handle secure writes for invoices, POs, financing requests, and KYC submissions.
